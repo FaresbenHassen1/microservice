@@ -1,0 +1,24 @@
+version: '3'
+services:
+  database:
+    image: postgres
+    restart: on-failure
+    container_name: postgr
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: goproject
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  microservice:
+    image: microservice
+    container_name: goproject
+    environment:
+      - HOST = "database"
+    ports: [ "8080:8080" ]
+    depends_on:
+      - database
+    restart: on-failure
