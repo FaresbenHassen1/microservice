@@ -15,7 +15,7 @@ type userData struct {
 }
 
 func TestGetUser(t *testing.T) {
-	db, err := db.Connection()
+	db, err := db.ConnectTestDB()
 	if err != nil {
 		t.Errorf("Error connecting to the database: %v", err)
 	}
@@ -43,7 +43,7 @@ func TestGetUser(t *testing.T) {
 }
 
 func TestCreateUser(t *testing.T) {
-	db, err := db.Connection()
+	db, err := db.ConnectTestDB()
 	if err != nil {
 		t.Errorf("Error connecting to the database: %v", err)
 	}

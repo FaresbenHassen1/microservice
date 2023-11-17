@@ -11,7 +11,7 @@ import (
 )
 
 func TestDeposit(t *testing.T) {
-	db, err := db.Connection()
+	db, err := db.ConnectTestDB()
 	if err != nil {
 		t.Errorf("Error connecting to the database: %v", err)
 	}
@@ -51,7 +51,7 @@ func TestDeposit(t *testing.T) {
 }
 
 func TestWithdraw(t *testing.T) {
-	db, err := db.Connection()
+	db, err := db.ConnectTestDB()
 	if err != nil {
 		t.Errorf("Error connecting to the database: %v", err)
 	}
@@ -94,7 +94,7 @@ func TestWithdraw(t *testing.T) {
 }
 
 func TestMakeTransaction(t *testing.T) {
-	db, err := db.Connection()
+	db, err := db.ConnectTestDB()
 	if err != nil {
 		t.Errorf("Error connecting to the database: %v", err)
 	}
@@ -161,7 +161,7 @@ func TestMakeTransaction(t *testing.T) {
 	}
 }
 func TestGetWallet(t *testing.T) {
-	db, err := db.Connection()
+	db, err := db.ConnectTestDB()
 	if err != nil {
 		t.Errorf("Error connecting to the database: %v", err)
 	}
@@ -183,7 +183,7 @@ func TestGetWallet(t *testing.T) {
 }
 
 func TestCreateWallet(t *testing.T) {
-	db, err := db.Connection()
+	db, err := db.ConnectTestDB()
 	if err != nil {
 		t.Errorf("Error connecting to the database: %v", err)
 	}
@@ -210,6 +210,9 @@ func TestCreateWallet(t *testing.T) {
 		})
 	}
 }
+
+// a test scenario that starts by creating a user then getting that user then creating a wallet for him
+// then does a couple of deposit and withdraw and later on retrieve his wallet's balance
 
 // func TestScenario(t *testing.T) {
 // 	db, err := db.Connection()
