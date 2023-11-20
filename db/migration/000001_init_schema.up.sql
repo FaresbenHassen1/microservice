@@ -1,18 +1,5 @@
--- Extension: uuid-ossp
-
--- DROP EXTENSION uuid-ossp;
-
-CREATE EXTENSION uuid-ossp
-	SCHEMA "public"
-	VERSION 1.1;
-
-
-
--- public.users definition
-
--- Drop table
-
--- DROP TABLE public.users;
+CREATE EXTENSION "uuid-ossp"
+	SCHEMA "public";
 
 CREATE TABLE public.users (
 	id_user uuid NOT NULL DEFAULT uuid_generate_v4(),
@@ -20,12 +7,6 @@ CREATE TABLE public.users (
 	CONSTRAINT users_pkey PRIMARY KEY (id_user)
 );
 
-
--- public.wallet definition
-
--- Drop table
-
--- DROP TABLE public.wallet;
 
 CREATE TABLE public.wallet (
 	id_wallet uuid NOT NULL DEFAULT uuid_generate_v4(),
@@ -37,12 +18,6 @@ CREATE TABLE public.wallet (
 	CONSTRAINT wallet_users_id_fkey FOREIGN KEY (users_id) REFERENCES public.users(id_user)
 );
 
-
--- public."transaction" definition
-
--- Drop table
-
--- DROP TABLE public."transaction";
 
 CREATE TABLE public."transaction" (
 	id_transaction uuid NOT NULL DEFAULT uuid_generate_v4(),
