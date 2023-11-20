@@ -19,14 +19,14 @@ func GetUser(db *sql.DB, c *gin.Context, id uuid.UUID) (*models.Users, error) {
 	return user, err
 }
 
-func CreateUser(db *sql.DB, c *gin.Context, name string) error {
+func CreateUser(db *sql.DB, c *gin.Context, name string) (models.Users, error) {
 	var user models.Users
 	if 1 > len(name) {
-		return fmt.Errorf("unable to create a user with an empty name")
+		return user, fmt.Errorf("unable to create a user with an empty name")
 	}
-	err := db.QueryRow("INSERT INTO users (name) VALUES ($1) RETURNING id_user", name).Scan(&user.Id)
+	err := db.QueryRow("INSERT INTO users (name) VALUES ($1) RETURNING *", name).Scan(&user.Id, &user.Name)
 	if err != nil {
-		return fmt.Errorf("%v", err)
+		return user, fmt.Errorf("%v", err)
 	}
-	return nil
+	return user, nil
 }

@@ -31,7 +31,7 @@ func CreateWallet(db *sql.DB) gin.HandlerFunc {
 		if err := c.ShouldBind(&wallet); err != nil {
 			c.AbortWithStatusJSON(400, err.Error())
 		}
-		err := service.CreateWallet(db, c, &wallet)
+		_, err := service.CreateWallet(db, c, &wallet)
 		if err != nil {
 			c.AbortWithStatusJSON(400, err.Error())
 		}

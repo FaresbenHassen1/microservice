@@ -29,7 +29,7 @@ func CreateUser(db *sql.DB) gin.HandlerFunc {
 		if err := ctx.ShouldBind(&user); err != nil {
 			ctx.AbortWithStatusJSON(400, err.Error())
 		}
-		err := service.CreateUser(db, ctx, user.Name)
+		_, err := service.CreateUser(db, ctx, user.Name)
 		if err != nil {
 			ctx.AbortWithStatusJSON(400, err.Error())
 		}

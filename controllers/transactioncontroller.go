@@ -18,7 +18,7 @@ func Deposit(db *sql.DB) gin.HandlerFunc {
 		if err := ctx.BindJSON(&transaction); err != nil {
 			ctx.AbortWithStatusJSON(400, err.Error())
 		}
-		if err := service.Deposit(db, ctx, &transaction); err != nil {
+		if _, _, err := service.Deposit(db, ctx, &transaction); err != nil {
 			ctx.AbortWithStatusJSON(400, err.Error())
 		}
 		ctx.String(http.StatusOK, "", transaction)
@@ -33,7 +33,7 @@ func Withdraw(db *sql.DB) gin.HandlerFunc {
 		if err := ctx.BindJSON(&transaction); err != nil {
 			ctx.AbortWithStatusJSON(400, err.Error())
 		}
-		if err := service.Withdraw(db, ctx, &transaction); err != nil {
+		if _, _, err := service.Withdraw(db, ctx, &transaction); err != nil {
 			ctx.AbortWithStatusJSON(400, err.Error())
 		}
 		ctx.String(http.StatusOK, "", transaction)
