@@ -9,3 +9,11 @@ the next figure will present the general architecture of the project with its ke
 Entity Relationship Diagram (ERD):
 The ERD consist of 3 tables which are Wallet,Transaction and user.
 ![alt Entity Relationship Diagram](/docs/erd.png)
+
+CMD:
+to run REST api:
+go run main.go
+
+to run GRPC :
+server: go run grpc_server/main.go
+client: go run grpc_client/main.go

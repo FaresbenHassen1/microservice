@@ -1,0 +1,27 @@
+syntax = "proto3";
+package pb;
+option go_package = "microservice/proto";
+
+
+service microservice{
+
+  rpc CreateUser (CreateUserRequest) returns (User);
+  rpc GetUsers (GetUsersParams) returns (UsersList);
+}
+
+message CreateUserRequest {
+  string name=1;
+}
+
+message User {
+  string id=1;
+  string name=2;
+}
+
+message GetUsersParams {
+
+}
+
+message UsersList {
+  repeated User users = 1; 
+}

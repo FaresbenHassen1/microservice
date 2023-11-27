@@ -1,6 +1,7 @@
 package server
 
 import (
+	"microservice/auth"
 	controller "microservice/controllers"
 	db "microservice/db"
 
@@ -11,10 +12,10 @@ func Server() *gin.Engine {
 	router := gin.Default()
 	router.Use(Cors())
 	db, _ := db.Connection()
-
+	authRoutes := router.Group("/").Use(auth.AuthMiddleWare())
 	//GET Method (get a user)
 	//http://localhost:8080/user/52406846-1ebf-45c7-a74d-d71dcba07691
-	router.GET("/user/:id", controller.GetUser(db))
+	authRoutes.GET("/user/:id", controller.GetUser(db))
 
 	//POST Method (creating a user)
 	//http://localhost:8080/user
@@ -25,19 +26,19 @@ func Server() *gin.Engine {
 
 	//GET Method (view a certain person's wallet)
 	//http://localhost/balance/52406846-1ebf-45c7-a74d-d71dcba07691
-	router.GET("/balance/:id", controller.GetWallet(db))
+	authRoutes.GET("/balance/:id", controller.GetWallet(db))
 
 	//POST Method (deposit money)
 	//http://localhost/deposit/b67d93a6-465f-4e2d-ad95-8f6283397cae
-	router.POST("/deposit/:id", controller.Deposit(db))
+	authRoutes.POST("/deposit/:id", controller.Deposit(db))
 
 	//POST Method (withdraw money)
 	//http://localhost/withdraw/b67d93a6-465f-4e2d-ad95-8f6283397cae
-	router.POST("/withdraw/:id", controller.Withdraw(db))
+	authRoutes.POST("/withdraw/:id", controller.Withdraw(db))
 
 	//POST Method (make a transaction withdraw or deposit)
 	//http://localhost/money/b67d93a6-465f-4e2d-ad95-8f6283397cae
-	router.POST("/money/:id", controller.MakeTransaction(db))
+	authRoutes.POST("/money/:id", controller.MakeTransaction(db))
 	return router
 }
 func Cors() gin.HandlerFunc {
