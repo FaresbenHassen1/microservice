@@ -1,0 +1,14 @@
+syntax = "proto3";
+package pb;
+option go_package = "microservice/proto";
+
+import "rpc_balance.proto";
+import "rpc_user.proto";
+
+service Microservice{
+
+  rpc CreateUser (CreateUserRequest) returns (User);
+  rpc GetUsers (GetUsersParams) returns (UsersList);
+  rpc GetBalance (BalanceRequest) returns (Balance);
+  rpc GetWallet (WalletRequest) returns (Wallet);
+}

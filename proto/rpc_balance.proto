@@ -1,0 +1,25 @@
+syntax = "proto3";
+package pb;
+option go_package = "microservice/proto";
+
+import "google/protobuf/timestamp.proto";
+
+message BalanceRequest{
+  string user_id=1;
+}
+
+message Balance{
+  float Balance=1;
+}
+
+message WalletRequest{
+  string id=1;
+}
+
+message Wallet {
+  string id=1;
+  google.protobuf.Timestamp created_date=2;
+  float balance=3;
+  string currency=4;
+  string user_id=5;
+}

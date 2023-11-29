@@ -13,10 +13,14 @@ migrateup:
 migratedown:
 	migrate -path db/migration -database postgresql://postgres:postgres@localhost:5432/projecttest?sslmode=disable -verbose down
 
-servergrpc:
-	go run grpc_server/main.go
+grpc:
+	go run main.go grpc
 
-clientgrpc:
-	go run grpc_client/main.go
+rest:
+	go run main.go rest
+
+protoc:
+	protoc --proto_path=proto --go_out=proto --go_opt=paths=source_relative     --go-grpc_out=proto
+ --go-grpc_opt=paths=source_relative     proto/*.proto
 
 .PHONY: postgres createdb dropdb migrateup

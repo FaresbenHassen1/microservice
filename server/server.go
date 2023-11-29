@@ -12,6 +12,7 @@ func Server() *gin.Engine {
 	router := gin.Default()
 	router.Use(Cors())
 	db, _ := db.Connection()
+	defer db.Close()
 	authRoutes := router.Group("/").Use(auth.AuthMiddleWare())
 	//GET Method (get a user)
 	//http://localhost:8080/user/52406846-1ebf-45c7-a74d-d71dcba07691

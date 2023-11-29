@@ -15,5 +15,6 @@ to run REST api:
 go run main.go
 
 to run GRPC :
-server: go run grpc_server/main.go
-client: go run grpc_client/main.go
+
+- server: go run grpc_server/main.go
+- client: go run grpc_client/main.go

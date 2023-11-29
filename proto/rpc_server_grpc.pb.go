@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.6.1
-// source: proto/rpc_create_user.proto
+// source: rpc_server.proto
 
 package proto
 
@@ -24,6 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type MicroserviceClient interface {
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*User, error)
 	GetUsers(ctx context.Context, in *GetUsersParams, opts ...grpc.CallOption) (*UsersList, error)
+	GetBalance(ctx context.Context, in *BalanceRequest, opts ...grpc.CallOption) (*Balance, error)
+	GetWallet(ctx context.Context, in *WalletRequest, opts ...grpc.CallOption) (*Wallet, error)
 }
 
 type microserviceClient struct {
@@ -36,7 +38,7 @@ func NewMicroserviceClient(cc grpc.ClientConnInterface) MicroserviceClient {
 
 func (c *microserviceClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*User, error) {
 	out := new(User)
-	err := c.cc.Invoke(ctx, "/pb.microservice/CreateUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.Microservice/CreateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +47,25 @@ func (c *microserviceClient) CreateUser(ctx context.Context, in *CreateUserReque
 
 func (c *microserviceClient) GetUsers(ctx context.Context, in *GetUsersParams, opts ...grpc.CallOption) (*UsersList, error) {
 	out := new(UsersList)
-	err := c.cc.Invoke(ctx, "/pb.microservice/GetUsers", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/pb.Microservice/GetUsers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *microserviceClient) GetBalance(ctx context.Context, in *BalanceRequest, opts ...grpc.CallOption) (*Balance, error) {
+	out := new(Balance)
+	err := c.cc.Invoke(ctx, "/pb.Microservice/GetBalance", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *microserviceClient) GetWallet(ctx context.Context, in *WalletRequest, opts ...grpc.CallOption) (*Wallet, error) {
+	out := new(Wallet)
+	err := c.cc.Invoke(ctx, "/pb.Microservice/GetWallet", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -58,6 +78,8 @@ func (c *microserviceClient) GetUsers(ctx context.Context, in *GetUsersParams, o
 type MicroserviceServer interface {
 	CreateUser(context.Context, *CreateUserRequest) (*User, error)
 	GetUsers(context.Context, *GetUsersParams) (*UsersList, error)
+	GetBalance(context.Context, *BalanceRequest) (*Balance, error)
+	GetWallet(context.Context, *WalletRequest) (*Wallet, error)
 	mustEmbedUnimplementedMicroserviceServer()
 }
 
@@ -70,6 +92,12 @@ func (UnimplementedMicroserviceServer) CreateUser(context.Context, *CreateUserRe
 }
 func (UnimplementedMicroserviceServer) GetUsers(context.Context, *GetUsersParams) (*UsersList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsers not implemented")
+}
+func (UnimplementedMicroserviceServer) GetBalance(context.Context, *BalanceRequest) (*Balance, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBalance not implemented")
+}
+func (UnimplementedMicroserviceServer) GetWallet(context.Context, *WalletRequest) (*Wallet, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWallet not implemented")
 }
 func (UnimplementedMicroserviceServer) mustEmbedUnimplementedMicroserviceServer() {}
 
@@ -94,7 +122,7 @@ func _Microservice_CreateUser_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.microservice/CreateUser",
+		FullMethod: "/pb.Microservice/CreateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MicroserviceServer).CreateUser(ctx, req.(*CreateUserRequest))
@@ -112,10 +140,46 @@ func _Microservice_GetUsers_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.microservice/GetUsers",
+		FullMethod: "/pb.Microservice/GetUsers",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MicroserviceServer).GetUsers(ctx, req.(*GetUsersParams))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Microservice_GetBalance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BalanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MicroserviceServer).GetBalance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.Microservice/GetBalance",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MicroserviceServer).GetBalance(ctx, req.(*BalanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Microservice_GetWallet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(WalletRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MicroserviceServer).GetWallet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.Microservice/GetWallet",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MicroserviceServer).GetWallet(ctx, req.(*WalletRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -124,7 +188,7 @@ func _Microservice_GetUsers_Handler(srv interface{}, ctx context.Context, dec fu
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Microservice_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "pb.microservice",
+	ServiceName: "pb.Microservice",
 	HandlerType: (*MicroserviceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -135,7 +199,15 @@ var Microservice_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "GetUsers",
 			Handler:    _Microservice_GetUsers_Handler,
 		},
+		{
+			MethodName: "GetBalance",
+			Handler:    _Microservice_GetBalance_Handler,
+		},
+		{
+			MethodName: "GetWallet",
+			Handler:    _Microservice_GetWallet_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "proto/rpc_create_user.proto",
+	Metadata: "rpc_server.proto",
 }
